@@ -5,9 +5,12 @@ const pool = require('./db')
 const PORT = process.env.PORT || 4000
 const app = express();
 
+const Users = require('./routers/users')
+
 app.use(cors({origin:"*"}))
 app.use(bodyParser.urlencoded({extended:false}))
 app.use(bodyParser.json())
+
 
 pool.query('SELECT NOW()', (err, res) => {
   try{
@@ -17,25 +20,18 @@ pool.query('SELECT NOW()', (err, res) => {
     console.log(err)
   }
 })
+// Get user data
+app.use('/users',Users)
 
-app.get('/users', async (req,res)=>{
-  try {
-    const data = await pool.query("SELECT user_id, user_name,user_email FROM users")
-    res.json(data.rows);
-  } catch (error) {
-    res.status(404).json(error)
-  }
-})
-
-app.post('/signup',async (req,res)=>{
+// User Sign up 
+app.post('/signup', async (req,res)=>{
   const {user_name,user_email,user_pwd} = req.body
   try {
-    const data = pool.query("INSERT INTO users(user_name,user_email,user_pwd) VALUES($1,$2,$3)",[user_name,user_email,user_pwd])
-    res.json(data)
+    const data = await pool.query("INSERT INTO users(user_name,user_email,user_pwd) VALUES($1,$2,$3) RETURNING *",[user_name,user_email,user_pwd])
+    res.status(200).json(data.rows)
   } catch (error) {
-    
+    res.status(404).json({error : error})
   }
-  // console.log(req.body)
 })
 
 app.listen(PORT,_=>{
