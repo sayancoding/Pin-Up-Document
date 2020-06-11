@@ -9,3 +9,7 @@
 -- SELECT * from users
 -- INSERT INTO users(user_name,user_email,user_pwd) VALUES('SAYAN MAITY','example@gmail.com','123');
 -- INSERT INTO users(user_name,user_email,user_pwd) VALUES('John Doe','johndoe@gmail.com','0011');
+-- DELETE from users;
+
+-- ALTER TABLE users 
+-- ALTER COLUMN user_pwd TYPE TEXT;
