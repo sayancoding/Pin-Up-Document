@@ -53,6 +53,8 @@ router.post('/signin', async (req, res) => {
           if (result) {
             const token = jwt.sign(
               {
+                "user_id": data.rows[0].user_id,
+                "user_name":data.rows[0].user_name,
                 "user_email": data.rows[0].user_email,
                 "user_id": data.rows[0].user_id
               },
@@ -80,12 +82,12 @@ router.post('/signin', async (req, res) => {
 
 // User Sign up 
 router.post('/signup', async (req, res) => {
-  const { user_name, user_email, user_pwd } = req.body
-  bcrypt.hash(user_pwd, 10, async (err, hash) => {
+  const { name, email, pwd } = req.body
+  bcrypt.hash(pwd, 10, async (err, hash) => {
     if (!err) {
       try {
-        const data = await pool.query("INSERT INTO users(user_name,user_email,user_pwd) VALUES($1,$2,$3) RETURNING *", [user_name, user_email, hash])
-        res.status(200).json(data.rows)
+        const data = await pool.query("INSERT INTO users(user_name,user_email,user_pwd) VALUES($1,$2,$3) RETURNING *", [name, email, hash])
+        res.status(200).json({message:'User created Successfully',saveDat:data.rows})
       } catch (err) {
         res.status(404).json({ error: err })
       }
