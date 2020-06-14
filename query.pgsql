@@ -31,3 +31,7 @@ INSERT INTO docs(user_id, doc_title, doc_desc)
 VALUES(11,'Do code','Working on pinup project and do add more code')
 
 SELECT * FROM docs;
+INSERT INTO docs(user_id, doc_title, doc_desc,doc_formateddetails) VALUES(11,'ask code question','Working on pinup project and do add more code','<p>sdd</p>')
+
+ALTER TABLE docs 
+ADD COLUMN doc_detail text DEFAULT null;
