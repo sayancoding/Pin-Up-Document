@@ -7,6 +7,8 @@ const app = express();
 
 const Users = require('./routers/users')
 const Docs = require('./routers/docs')
+const resetPwd = require('./routers/resetPwd')
+
 app.use(cors({origin:"*"}))
 app.use(bodyParser.urlencoded({extended:false}))
 app.use(bodyParser.json())
@@ -24,6 +26,7 @@ pool.query('SELECT NOW()', (err, res) => {
 // Get user data
 app.use('/users',Users)
 app.use('/docs',Docs)
+app.use('/resetPwd',resetPwd)
 
 app.listen(PORT,_=>{
   console.log(`local server is running at ${PORT}`)
